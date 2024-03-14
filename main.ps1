@@ -136,7 +136,7 @@ function WebBuild() {
 
 function WebCopy() {
     Write-Host "Copying files from $BuildOutputFolderPath to $WebBuildFolder LogGuid: 5790aeff-55b3-47d4-b493-4c01f4cf87df"
-    Copy-Item -Path "$BuildOutputFolderPath\*" -Destination $WebBuildFolder -Recurse -Force
+    Copy-Item -Path "$BuildOutputFolderPath\*" -Destination $WebBuildFolder -Recurse -Force -Exclude "index.html"
 }
 
 function WebDeploy() {
