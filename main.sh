@@ -8,6 +8,8 @@ function install-dependencies() {
     echo "install-dependencies"
     npm install react-unity-webgl
     npm install --save-dev gh-pages
+    npm install bootstrap
+    npm install react-router-dom
 }
 
 function deploy() {
