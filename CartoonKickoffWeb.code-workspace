@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\CartoonKickoffApi"
+		}
+	],
+	"settings": {
+		"powershell.cwd": "c:\\Users\\dj_re\\Ggg.Github\\CartoonKickoffWeb"
+	}
+}

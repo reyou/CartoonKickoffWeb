@@ -22,7 +22,7 @@ function test-contact-form() {
     echo "test-contact-form with e2e and captcha"
 }
 
-main() {
+function main() {
     clear
     echo "Welcome to CartoonKickoff Web React!"
 
