@@ -7,6 +7,7 @@ import Navbar from './Navbar';
 import About from './About';
 import Contact from './Contact';
 import Account from './Pages/Account';
+import Login from './Pages/Login';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/account' element={<Account />} />
+        <Route path='/account/login' element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

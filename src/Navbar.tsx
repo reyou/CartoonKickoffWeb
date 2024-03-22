@@ -88,9 +88,9 @@ function NavbarAccountItems() {
           aria-labelledby='navbarAccountDropdown'
         >
           <li>
-            <a className='dropdown-item' href='#'>
+            <Link to='/account/login' className='dropdown-item'>
               Login
-            </a>
+            </Link>
           </li>
           <li>
             <a className='dropdown-item' href='#'>
