@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import styles from './Contact.module.css';
+import PageLayout from './PageLayout';
+import Http from './Services/Http';
 
 function ContactUs() {
   const [name, setName] = useState('');
@@ -13,21 +13,13 @@ function ContactUs() {
     setErrorMessage('');
 
     const formData = {
-      name: name, // Assuming 'name' is a state variable or ref
-      email: email, // Assuming 'email' is a state variable or ref
-      message: message // Assuming 'message' is a state variable or ref
+      name: name,
+      email: email,
+      message: message
     };
 
-    const endpoint =
-      process.env.NODE_ENV === 'development'
-        ? 'http://localhost:5281/contact-us'
-        : 'https://api.cartoonkickoff.com/contact-us';
-
-    // Here you would typically send the data to a server or email service.
-    console.log('Submitted form', formData, endpoint, process.env.NODE_ENV);
-
     try {
-      const response = await axios.post(endpoint, formData);
+      const response = await Http.post('contact-us', formData);
       // Handle the response here
       console.log('Form submitted successfully', response.data);
       // Optionally reset the form or navigate the user to a thank you page
@@ -39,8 +31,7 @@ function ContactUs() {
   };
 
   return (
-    <div className='container mt-5'>
-      <h2>Contact Us</h2>
+    <PageLayout title='Contact Us'>
       <form onSubmit={handleSubmit}>
         <div className='mb-3'>
           <label htmlFor='name' className='form-label'>
@@ -90,7 +81,7 @@ function ContactUs() {
           </div>
         )}
       </form>
-    </div>
+    </PageLayout>
   );
 }
 
