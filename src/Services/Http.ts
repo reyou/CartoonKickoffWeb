@@ -8,7 +8,12 @@ export default class Http {
       const response = await axios.post(endpoint, body);
       return response;
     } catch (error) {
-      console.error('HTTP error', error);
+      console.log({
+        file: __filename,
+        function: 'HTTP error',
+        error,
+        guid: 'f924863a-e72c-4029-a4b0-515fc1281da8'
+      });
       throw error;
     }
   }

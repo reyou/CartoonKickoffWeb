@@ -1,15 +1,33 @@
 import { useState, FormEvent } from 'react';
 import PageLayout from '../PageLayout';
+import Http from '../Services/Http';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log('Login with:', email, password);
-    // Here you would typically handle the login logic,
-    // for example sending a request to your backend server.
+    try {
+      const response = await Http.post('login', {
+        email,
+        password
+      });
+      console.log({
+        file: __filename,
+        function: 'functionName',
+        response,
+        guid: 'b4c39e02-a8c2-4b34-82bf-5cd8bbb47d63'
+      });
+    } catch (error) {
+      console.log({
+        file: __filename,
+        function: 'functionName',
+        error,
+        guid: 'c2a24cc0-5342-479e-907a-f6e943bd6303'
+      });
+    }
   };
 
   return (
@@ -22,7 +40,7 @@ function LoginPage() {
           <input
             type='email'
             className='form-control'
-            id='emailInput'
+            id='email'
             aria-describedby='emailHelp'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -39,7 +57,7 @@ function LoginPage() {
           <input
             type='password'
             className='form-control'
-            id='passwordInput'
+            id='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required

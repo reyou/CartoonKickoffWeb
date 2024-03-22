@@ -24,6 +24,11 @@ function contact-us() {
     node "scripts\test\contact-us.js"
 }
 
+function login() {
+    echo "login with e2e and captcha"
+    node "scripts\test\login.js"
+}
+
 function local_run() {
     echo "local run"
     echo "http://localhost:3000/"
@@ -73,6 +78,8 @@ function main() {
         deploy
     elif [ "$1" = "contact-us" ]; then
         contact-us
+    elif [ "$1" = "login" ]; then
+        login
     else
         echo "Could not find the action: '$1'."
     fi
