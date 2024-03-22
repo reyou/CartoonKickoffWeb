@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 console.log({
   file: __filename,
-  function: 'ReactDOM.createRoot',
+  function: 'ReactDOM.createRoot start',
   guid: 'de8a6f0f-8a1f-44c2-88a8-694c99506a2a'
 });
 const root = ReactDOM.createRoot(
@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(
 );
 console.log({
   file: __filename,
-  function: 'ReactDOM.createRoot',
+  function: 'ReactDOM.createRoot end',
   guid: '66883f26-eb81-4214-abbd-4fb36e188ee2',
   root
 });
