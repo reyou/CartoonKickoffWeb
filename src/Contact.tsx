@@ -1,14 +1,41 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import styles from './Contact.module.css';
 
 function ContactUs() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setErrorMessage('');
+
+    const formData = {
+      name: name, // Assuming 'name' is a state variable or ref
+      email: email, // Assuming 'email' is a state variable or ref
+      message: message // Assuming 'message' is a state variable or ref
+    };
+
+    const endpoint =
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:5281/contact-us'
+        : 'https://api.cartoonkickoff.com/contact-us';
+
     // Here you would typically send the data to a server or email service.
-    console.log('Submitted form', { name, email, message });
+    console.log('Submitted form', formData, endpoint, process.env.NODE_ENV);
+
+    try {
+      const response = await axios.post(endpoint, formData);
+      // Handle the response here
+      console.log('Form submitted successfully', response.data);
+      // Optionally reset the form or navigate the user to a thank you page
+    } catch (error) {
+      // Handle errors here
+      setErrorMessage('Failed to send message. Please try again later.');
+      console.error('Error submitting form', error);
+    }
   };
 
   return (
@@ -57,6 +84,11 @@ function ContactUs() {
         <button type='submit' className='btn btn-primary'>
           Send Message
         </button>
+        {errorMessage && (
+          <div className='alert alert-danger mt-3' role='alert'>
+            {errorMessage}
+          </div>
+        )}
       </form>
     </div>
   );

@@ -8,7 +8,6 @@ $WebBuildFolder = "C:\Users\dj_re\Ggg.Github\CartoonKickoffWeb\public"
 
 function Server {
     $current_location = Get-Location   
-    WebBuild
     Write-Host "Setting location to $WebBuildFolder LogGuid: cdb7ae78-7242-41a5-a541-bc31c45a6aee"
     Set-Location $WebFolder
     npm run start
@@ -158,6 +157,33 @@ function Analytics() {
     Start-Process -FilePath $edge_location -ArgumentList "https://firebase.google.com/docs/analytics/unity/start"
 }
 
+function KillServer {
+    param(
+        [int]$Port = 3000 # Default port is 3000, you can pass a different port as an argument
+    )
+
+    Write-Host "Attempting to kill server on port $Port..."
+
+    # Find the process using the specified port
+    $process = Get-NetTCPConnection -LocalPort $Port -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique
+
+    if ($process) {
+        Write-Host "Found process with PID: $process. Killing process..."
+        # Attempt to stop the process
+        try {
+            Stop-Process -Id $process -Force
+            Write-Host "Process killed successfully."
+        }
+        catch {
+            Write-Host "Failed to kill process. Error: $_"
+        }
+    }
+    else {
+        Write-Host "No process found listening on port $Port."
+    }
+}
+
+
 function main {
     param (
         [string[]]$params
@@ -194,6 +220,9 @@ function main {
         }
         "analytics" {
             Analytics
+        }
+        "kill-server" {
+            KillServer
         }
         default {
             Write-Host "Unknown action: '$action'."

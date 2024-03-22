@@ -1,6 +1,7 @@
 #!/bin/bash
 
 function start() {
+    kill-server
     npm run start
 }
 
@@ -13,13 +14,39 @@ function install-dependencies() {
 }
 
 function deploy() {
-    echo "deploy"
+    echo "Deploying with gh-pages"
     npm run build
     npm run deploy
 }
 
-function test-contact-form() {
+function contact-us() {
     echo "test-contact-form with e2e and captcha"
+    node "scripts\test\contact-us.js"
+}
+
+function local_run() {
+    echo "local run"
+    echo "http://localhost:3000/"
+}
+
+function kill-server() {
+    echo "kill server"
+    PID=$(lsof -t -i:3000)
+
+    # If a PID was found, kill the process
+    if [ -z "$PID" ]; then
+        echo "No process found on port 3000."
+    else
+        echo "Killing process on port 3000 with PID: $PID"
+        kill $PID
+
+        if [ $? -eq 0 ]; then
+            echo "Process killed successfully."
+        else
+            echo "Failed to kill process."
+        fi
+    fi
+
 }
 
 function main() {
@@ -30,6 +57,12 @@ function main() {
         npm run test
     elif [ "$1" = "start" ]; then
         start
+    elif [ "$1" = "server" ]; then
+        start
+    elif [ "$1" = "kill-server" ]; then
+        kill-server
+    elif [ "$1" = "local" ]; then
+        local_run
     elif [ "$1" = "create-app" ]; then
         npx create-react-app cartoon-kickoff-react --template typescript
     elif [ "$1" = "install-dependencies" ]; then
@@ -38,8 +71,8 @@ function main() {
         deploy
     elif [ "$1" = "publish" ]; then
         deploy
-    elif [ "$1" = "test-contact-form" ]; then
-        test-contact-form
+    elif [ "$1" = "contact-us" ]; then
+        contact-us
     else
         echo "Could not find the action: '$1'."
     fi
