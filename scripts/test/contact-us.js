@@ -1,20 +1,10 @@
-const { Builder, By } = require('selenium-webdriver');
-const edge = require('selenium-webdriver/edge');
+const { By } = require('selenium-webdriver');
+const SeleniumSetup = require('./selenium-setup');
 
-(async function fillContactForm() {
-  // Set up Edge options
-  let options = new edge.Options();
-  // For Edge version 18 or lower, use `setEdgeChromium(false)`
-  // For Edge version 79 or higher, the line below is not needed
-  // options.setEdgeChromium(true);
-
-  let driver = await new Builder()
-    .forBrowser('MicrosoftEdge')
-    .setEdgeOptions(options)
-    .build();
+async function main() {
   try {
     // Open the contact page
-    await driver.get('http://localhost:3001/contact');
+    const driver = await SeleniumSetup.getDriver('contact');
 
     // Fill in the form fields
     await driver.findElement(By.id('name')).sendKeys('John Doe');
@@ -30,6 +20,8 @@ const edge = require('selenium-webdriver/edge');
     // await driver.wait(until.titleIs('webdriver - Google Search'), 1000);
   } finally {
     // Quit the browser after the actions
-    await driver.quit();
+    // await driver.quit();
   }
-})();
+}
+
+main();

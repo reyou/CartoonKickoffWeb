@@ -1,15 +1,9 @@
-const { Builder, By } = require('selenium-webdriver');
-const edge = require('selenium-webdriver/edge');
+const { By } = require('selenium-webdriver');
+const SeleniumSetup = require('./selenium-setup');
 
 async function main() {
-  let options = new edge.Options();
-
-  let driver = await new Builder()
-    .forBrowser('MicrosoftEdge')
-    .setEdgeOptions(options)
-    .build();
+  const driver = await SeleniumSetup.getDriver('account/login');
   try {
-    await driver.get('http://localhost:3001/account/login');
     await driver
       .findElement(By.id('email'))
       .sendKeys('example@cartoonkickoff.com');

@@ -1,32 +1,44 @@
+import { AxiosResponse } from 'axios';
 import { useState, FormEvent } from 'react';
+import HttpError from '../Lib/HttpError';
+import HttpResponse from '../Lib/HttpResponse';
 import PageLayout from '../PageLayout';
 import Http from '../Services/Http';
 
 function LoginPage() {
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [loginDisabled, setLoginDisabled] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const sleep = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Login with:', email, password);
+    setIsLoggingIn(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+    await sleep(2000);
+    let response: HttpResponse | undefined;
     try {
-      const response = await Http.post('login', {
+      response = await Http.post('account/login', {
         email,
         password
       });
-      console.log({
-        file: __filename,
-        function: 'functionName',
-        response,
-        guid: 'b4c39e02-a8c2-4b34-82bf-5cd8bbb47d63'
-      });
     } catch (error) {
-      console.log({
-        file: __filename,
-        function: 'functionName',
-        error,
-        guid: 'c2a24cc0-5342-479e-907a-f6e943bd6303'
-      });
+      const httpError = error as HttpError;
+      setErrorMessage(httpError.message);
+    } finally {
+      if (response) {
+        setSuccessMessage(response.data.message);
+        setLoginDisabled(true);
+        // redirect user to redict
+        // but remember only redirect within the site
+      }
+      setIsLoggingIn(false);
     }
   };
 
@@ -63,9 +75,23 @@ function LoginPage() {
             required
           />
         </div>
-        <button type='submit' className='btn btn-primary w-100'>
-          Login
+        <button
+          type='submit'
+          disabled={isLoggingIn || loginDisabled}
+          className='btn btn-primary'
+        >
+          {isLoggingIn ? 'Logging in...' : 'Login'}
         </button>
+        {errorMessage && (
+          <div className='alert alert-danger mt-3' role='alert'>
+            {errorMessage}
+          </div>
+        )}
+        {successMessage && (
+          <div className='alert alert-success mt-3' role='alert'>
+            {successMessage}
+          </div>
+        )}
       </form>
     </PageLayout>
   );
