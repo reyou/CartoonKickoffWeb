@@ -1,9 +1,28 @@
+import { ValidationErrorMap } from './ValidationErrorMap';
+
+type Data = {
+  type: string;
+  title?: string;
+  status?: number;
+  errors?: ValidationErrorMap;
+  traceId?: string;
+  message: string;
+};
+
 export default class HttpError extends Error {
   public statusCode: number;
   public innerException: Error;
-  code: string | undefined;
-  url: string = '';
-  statusText: string | undefined;
+  public code: string | undefined;
+  public url: string = '';
+  public statusText: string | undefined;
+  public data: Data | undefined;
+
+  public date: string = '';
+
+  public guid: string = '';
+  public type: string = '';
+  public title: string = '';
+  public traceId: string = '';
 
   constructor(
     message: string,

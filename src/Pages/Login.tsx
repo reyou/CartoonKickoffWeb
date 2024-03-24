@@ -1,7 +1,9 @@
-import { AxiosResponse } from 'axios';
 import { useState, FormEvent } from 'react';
+import ErrorPanel from '../Components/ErrorPanel';
+import SuccessPanel from '../Components/SuccessPanel';
 import HttpError from '../Lib/HttpError';
 import HttpResponse from '../Lib/HttpResponse';
+import { ValidationErrorMap } from '../Lib/ValidationErrorMap';
 import PageLayout from '../PageLayout';
 import Http from '../Services/Http';
 
@@ -10,7 +12,8 @@ function LoginPage() {
   const [loginDisabled, setLoginDisabled] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
+  const [errors, setErrors] = useState<ValidationErrorMap>({});
   const [successMessage, setSuccessMessage] = useState('');
 
   const sleep = (ms: number) =>
@@ -19,7 +22,8 @@ function LoginPage() {
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoggingIn(true);
-    setErrorMessage('');
+    setErrorMessages([]);
+    setErrors({});
     setSuccessMessage('');
     await sleep(2000);
     let response: HttpResponse | undefined;
@@ -30,7 +34,14 @@ function LoginPage() {
       });
     } catch (error) {
       const httpError = error as HttpError;
-      setErrorMessage(httpError.message);
+      const errorMessages = [httpError.message];
+      if (httpError.data?.message) {
+        errorMessages.push(httpError.data.message);
+      }
+      setErrorMessages(errorMessages);
+      if (httpError.data?.errors) {
+        setErrors(httpError.data?.errors);
+      }
     } finally {
       if (response) {
         setSuccessMessage(response.data.message);
@@ -82,16 +93,8 @@ function LoginPage() {
         >
           {isLoggingIn ? 'Logging in...' : 'Login'}
         </button>
-        {errorMessage && (
-          <div className='alert alert-danger mt-3' role='alert'>
-            {errorMessage}
-          </div>
-        )}
-        {successMessage && (
-          <div className='alert alert-success mt-3' role='alert'>
-            {successMessage}
-          </div>
-        )}
+        <ErrorPanel errorMessages={errorMessages} errors={errors}></ErrorPanel>
+        <SuccessPanel successMessage={successMessage}></SuccessPanel>
       </form>
     </PageLayout>
   );

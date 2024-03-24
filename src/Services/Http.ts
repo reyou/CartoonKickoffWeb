@@ -25,6 +25,29 @@ export default class Http {
         httpError.code = error.code;
         httpError.statusText = error.response?.statusText;
         httpError.url = error.request.responseURL;
+        let responseData = error.response?.data;
+        if (responseData) {
+          if (responseData.data) {
+            // Api error
+            httpError.data = responseData.data;
+            httpError.type = responseData.type;
+            httpError.date = responseData.date;
+            httpError.guid = responseData.guid;
+          } else {
+            // Framework error
+            httpError.type = responseData.type;
+            httpError.title = responseData.title;
+            httpError.statusCode = responseData.status;
+            httpError.traceId = responseData.traceId;
+            httpError.data = responseData;
+          }
+        }
+        console.log({
+          file: __filename,
+          function: 'functionName',
+          httpError,
+          guid: '6eff766e-0f9b-4119-a966-fc6178888a63'
+        });
         throw httpError;
       } else if (error instanceof Error) {
         let httpError = new HttpError(
