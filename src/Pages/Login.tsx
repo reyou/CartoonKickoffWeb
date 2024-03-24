@@ -1,8 +1,10 @@
 import { useState, FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import ErrorPanel from '../Components/ErrorPanel';
 import SuccessPanel from '../Components/SuccessPanel';
 import HttpError from '../Lib/HttpError';
 import HttpResponse from '../Lib/HttpResponse';
+import Utils from '../Lib/Utils';
 import { ValidationErrorMap } from '../Lib/ValidationErrorMap';
 import PageLayout from '../PageLayout';
 import Http from '../Services/Http';
@@ -16,22 +18,21 @@ function LoginPage() {
   const [errors, setErrors] = useState<ValidationErrorMap>({});
   const [successMessage, setSuccessMessage] = useState('');
 
-  const sleep = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
-
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoggingIn(true);
     setErrorMessages([]);
     setErrors({});
     setSuccessMessage('');
-    await sleep(2000);
+    await Utils.sleep();
     let response: HttpResponse | undefined;
     try {
       response = await Http.post('account/login', {
         email,
         password
       });
+      setSuccessMessage(response.data.message);
+      setLoginDisabled(true);
     } catch (error) {
       const httpError = error as HttpError;
       const errorMessages = [httpError.message];
@@ -43,12 +44,6 @@ function LoginPage() {
         setErrors(httpError.data?.errors);
       }
     } finally {
-      if (response) {
-        setSuccessMessage(response.data.message);
-        setLoginDisabled(true);
-        // redirect user to redict
-        // but remember only redirect within the site
-      }
       setIsLoggingIn(false);
     }
   };
@@ -95,6 +90,14 @@ function LoginPage() {
         </button>
         <ErrorPanel errorMessages={errorMessages} errors={errors}></ErrorPanel>
         <SuccessPanel successMessage={successMessage}></SuccessPanel>
+        <div className='mt-3'>
+          <p>
+            No account?{' '}
+            <Link to='/account/sign-up' className='link-primary'>
+              Sign up here
+            </Link>
+          </p>
+        </div>
       </form>
     </PageLayout>
   );

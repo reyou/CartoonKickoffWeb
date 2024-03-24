@@ -13,8 +13,8 @@ export default function ErrorPanel({ errorMessages, errors }: ErrorPanelProps) {
           <div>
             <strong>Error</strong>
           </div>
-          {errorMessages.map((errorMessage) => {
-            return <div> {errorMessage}</div>;
+          {errorMessages.map((errorMessage, index) => {
+            return <div key={index}> {errorMessage}</div>;
           })}
         </div>
       )}

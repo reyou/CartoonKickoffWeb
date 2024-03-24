@@ -31,7 +31,7 @@ function ContactUs() {
   };
 
   return (
-    <PageLayout title='Contact Us'>
+    <PageLayout title='Contact us'>
       <form onSubmit={handleSubmit}>
         <div className='mb-3'>
           <label htmlFor='name' className='form-label'>

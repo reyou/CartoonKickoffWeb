@@ -42,12 +42,6 @@ export default class Http {
             httpError.data = responseData;
           }
         }
-        console.log({
-          file: __filename,
-          function: 'functionName',
-          httpError,
-          guid: '6eff766e-0f9b-4119-a966-fc6178888a63'
-        });
         throw httpError;
       } else if (error instanceof Error) {
         let httpError = new HttpError(

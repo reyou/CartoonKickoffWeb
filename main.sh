@@ -29,6 +29,11 @@ function login() {
     node "scripts\test\login.js"
 }
 
+function sign-up() {
+    echo "sign-up with e2e and captcha"
+    node "scripts\test\sign-up.js"
+}
+
 function local_run() {
     echo "local run"
     echo "http://localhost:3000/"
@@ -80,6 +85,8 @@ function main() {
         contact-us
     elif [ "$1" = "login" ]; then
         login
+    elif [ "$1" = "sign-up" ]; then
+        sign-up
     else
         echo "Could not find the action: '$1'."
     fi
