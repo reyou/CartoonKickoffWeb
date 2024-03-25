@@ -24,9 +24,9 @@ function contact-us() {
     node "scripts\test\contact-us.js"
 }
 
-function login() {
+function log-in() {
     echo "login with e2e and captcha"
-    node "scripts\test\login.js"
+    node "scripts\test\log-in.js"
 }
 
 function sign-up() {
@@ -83,8 +83,8 @@ function main() {
         deploy
     elif [ "$1" = "contact-us" ]; then
         contact-us
-    elif [ "$1" = "login" ]; then
-        login
+    elif [ "$1" = "log-in" ]; then
+        log-in
     elif [ "$1" = "sign-up" ]; then
         sign-up
     else

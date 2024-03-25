@@ -27,7 +27,7 @@ function LoginPage() {
     await Utils.sleep();
     let response: HttpResponse | undefined;
     try {
-      response = await Http.post('account/login', {
+      response = await Http.post('account/log-in', {
         email,
         password
       });
@@ -49,7 +49,7 @@ function LoginPage() {
   };
 
   return (
-    <PageLayout title='Login'>
+    <PageLayout title='Log in'>
       <form onSubmit={handleLogin}>
         <div className='mb-3'>
           <label htmlFor='emailInput' className='form-label'>
