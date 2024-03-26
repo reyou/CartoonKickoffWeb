@@ -1,5 +1,10 @@
 import { useState, FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams
+} from 'react-router-dom';
 import ErrorPanel from '../Components/ErrorPanel';
 import SuccessPanel from '../Components/SuccessPanel';
 import HttpError from '../Lib/HttpError';
@@ -10,6 +15,9 @@ import PageLayout from '../PageLayout';
 import Http from '../Services/Http';
 
 function LoginPage() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [loginDisabled, setLoginDisabled] = useState(false);
   const [email, setEmail] = useState('');
@@ -33,6 +41,10 @@ function LoginPage() {
       });
       setSuccessMessage(response.data.message);
       setLoginDisabled(true);
+      localStorage.setItem('token', response.data.token);
+      const fromQuery = searchParams.get('from');
+      const from = fromQuery || '/account';
+      navigate(from, { replace: true });
     } catch (error) {
       const httpError = error as HttpError;
       const errorMessages = [httpError.message];
