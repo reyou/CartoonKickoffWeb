@@ -48,7 +48,7 @@ function kill-server() {
         echo "No process found on port 3000."
     else
         echo "Killing process on port 3000 with PID: $PID"
-        kill $PID
+        kill "$PID"
 
         if [ $? -eq 0 ]; then
             echo "Process killed successfully."

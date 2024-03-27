@@ -3,6 +3,8 @@ import logo from './assets/logo.webp';
 import styles from './Navbar.module.css';
 import { useState } from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useAuth } from './Components/AuthProvider';
+import { AuthContextType } from './Components/AuthContextType';
 
 interface NavbarStandardItemsProps {
   handleNavCollapse: () => void;
@@ -15,7 +17,7 @@ interface NavbarCollapseButtonProps {
 
 function Navbar() {
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
-
+  const auth = useAuth();
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
 
   return (
@@ -34,7 +36,7 @@ function Navbar() {
             handleNavCollapse={handleNavCollapse}
           ></NavbarStandardItems>
 
-          <NavbarAccountItems></NavbarAccountItems>
+          <NavbarAccountItems auth={auth}></NavbarAccountItems>
         </div>
       </div>
     </nav>
@@ -69,7 +71,15 @@ function NavbarLogo() {
   );
 }
 
-function NavbarAccountItems() {
+interface NavbarAccountItemsProps {
+  auth: AuthContextType | null;
+}
+
+function NavbarAccountItems({ auth }: NavbarAccountItemsProps) {
+  const handleLogout = () => {
+    auth?.logout();
+  };
+
   return (
     <ul className='navbar-nav ms-auto mb-2 mb-lg-0'>
       <li className='nav-item dropdown'>
@@ -87,21 +97,33 @@ function NavbarAccountItems() {
           className='dropdown-menu dropdown-menu-end'
           aria-labelledby='navbarAccountDropdown'
         >
-          <li>
-            <Link to='/account/login' className='dropdown-item'>
-              Login
-            </Link>
-          </li>
-          <li>
-            <a className='dropdown-item' href='#'>
-              Register
-            </a>
-          </li>
-          {/* After login, show additional options */}
-          {/*
-          <li><a className="dropdown-item" href="#">Profile</a></li>
-          <li><a className="dropdown-item" href="#">Logout</a></li>
-          */}
+          {auth && auth.authToken ? (
+            <>
+              <li>
+                <Link to='/account' className='dropdown-item'>
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <button className='dropdown-item' onClick={handleLogout}>
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link to='/account/login' className='dropdown-item'>
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link to='/account/register' className='dropdown-item'>
+                  Register
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </li>
     </ul>

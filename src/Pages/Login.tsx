@@ -1,10 +1,11 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import {
   Link,
   useLocation,
   useNavigate,
   useSearchParams
 } from 'react-router-dom';
+import { useAuth } from '../Components/AuthProvider';
 import ErrorPanel from '../Components/ErrorPanel';
 import SuccessPanel from '../Components/SuccessPanel';
 import HttpError from '../Lib/HttpError';
@@ -15,9 +16,9 @@ import PageLayout from '../PageLayout';
 import Http from '../Services/Http';
 
 function LoginPage() {
+  const auth = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [loginDisabled, setLoginDisabled] = useState(false);
   const [email, setEmail] = useState('');
@@ -25,6 +26,19 @@ function LoginPage() {
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [errors, setErrors] = useState<ValidationErrorMap>({});
   const [successMessage, setSuccessMessage] = useState('');
+
+  const handleAuthentication = (token: string) => {
+    auth?.login(token);
+    const fromQuery = searchParams.get('from');
+    const from = fromQuery || '/account';
+    navigate(from, { replace: true });
+  };
+
+  useEffect(() => {
+    if (auth !== null && auth.authToken) {
+      handleAuthentication(auth.authToken);
+    }
+  }, [auth, navigate, searchParams]);
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,10 +55,7 @@ function LoginPage() {
       });
       setSuccessMessage(response.data.message);
       setLoginDisabled(true);
-      localStorage.setItem('token', response.data.token);
-      const fromQuery = searchParams.get('from');
-      const from = fromQuery || '/account';
-      navigate(from, { replace: true });
+      handleAuthentication(response.data.token);
     } catch (error) {
       const httpError = error as HttpError;
       const errorMessages = [httpError.message];
