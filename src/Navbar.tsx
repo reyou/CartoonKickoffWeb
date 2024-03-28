@@ -113,12 +113,12 @@ function NavbarAccountItems({ auth }: NavbarAccountItemsProps) {
           ) : (
             <>
               <li>
-                <Link to='/account/login' className='dropdown-item'>
+                <Link to='/account/log-in' className='dropdown-item'>
                   Login
                 </Link>
               </li>
               <li>
-                <Link to='/account/register' className='dropdown-item'>
+                <Link to='/account/sign-up' className='dropdown-item'>
                   Register
                 </Link>
               </li>

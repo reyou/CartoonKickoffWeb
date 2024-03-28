@@ -15,7 +15,7 @@ import { ValidationErrorMap } from '../Lib/ValidationErrorMap';
 import PageLayout from '../PageLayout';
 import Http from '../Services/Http';
 
-function LoginPage() {
+function Login() {
   const auth = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -126,4 +126,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default Login;

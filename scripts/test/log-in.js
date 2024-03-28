@@ -2,7 +2,7 @@ const { By } = require('selenium-webdriver');
 const SeleniumSetup = require('./selenium-setup');
 
 async function main() {
-  const driver = await SeleniumSetup.getDriver('account/login');
+  const driver = await SeleniumSetup.getDriver('account/log-in');
   try {
     await driver
       .findElement(By.id('email'))

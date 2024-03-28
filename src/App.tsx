@@ -7,8 +7,8 @@ import Navbar from './Navbar';
 import About from './About';
 import Contact from './Contact';
 import Account from './Pages/Account';
-import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
+import LogIn from './Pages/Login';
 import { AuthProvider } from './Components/AuthProvider';
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/account' element={<Account />} />
-          <Route path='/account/login' element={<Login />} />
+          <Route path='/account/log-in' element={<LogIn />} />
           <Route path='/account/sign-up' element={<SignUp />} />
         </Routes>
       </AuthProvider>
