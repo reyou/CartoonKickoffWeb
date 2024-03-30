@@ -5,15 +5,15 @@ import {
   useNavigate,
   useSearchParams
 } from 'react-router-dom';
-import { useAuth } from '../Components/AuthProvider';
-import ErrorPanel from '../Components/ErrorPanel';
-import SuccessPanel from '../Components/SuccessPanel';
-import HttpError from '../Lib/HttpError';
-import HttpResponse from '../Lib/HttpResponse';
-import Utils from '../Lib/Utils';
-import { ValidationErrorMap } from '../Lib/ValidationErrorMap';
-import PageLayout from '../PageLayout';
-import Http from '../Services/Http';
+import { useAuth } from '../../Components/AuthProvider';
+import ErrorPanel from '../../Components/ErrorPanel';
+import SuccessPanel from '../../Components/SuccessPanel';
+import HttpError from '../../Lib/HttpError';
+import HttpResponse from '../../Lib/HttpResponse';
+import Utils from '../../Lib/Utils';
+import { ValidationErrorMap } from '../../Lib/ValidationErrorMap';
+import PageLayout from '../../PageLayout';
+import Http from '../../Services/Http';
 
 function Login() {
   const auth = useAuth();

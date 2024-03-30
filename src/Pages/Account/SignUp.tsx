@@ -1,13 +1,13 @@
 import { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
-import ErrorPanel from '../Components/ErrorPanel';
-import SuccessPanel from '../Components/SuccessPanel';
-import HttpError from '../Lib/HttpError';
-import HttpResponse from '../Lib/HttpResponse';
-import Utils from '../Lib/Utils';
-import { ValidationErrorMap } from '../Lib/ValidationErrorMap';
-import PageLayout from '../PageLayout';
-import Http from '../Services/Http';
+import ErrorPanel from '../../Components/ErrorPanel';
+import SuccessPanel from '../../Components/SuccessPanel';
+import HttpError from '../../Lib/HttpError';
+import HttpResponse from '../../Lib/HttpResponse';
+import Utils from '../../Lib/Utils';
+import { ValidationErrorMap } from '../../Lib/ValidationErrorMap';
+import PageLayout from '../../PageLayout';
+import Http from '../../Services/Http';
 
 const checkPasswordStrength = (password: string): boolean => {
   // Define the minimum password length.

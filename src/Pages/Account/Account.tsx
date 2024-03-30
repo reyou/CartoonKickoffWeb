@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PageLayout from '../PageLayout';
+import PageLayout from '../../PageLayout';
 
 // Define a type for the user profile data
 type UserProfile = {
