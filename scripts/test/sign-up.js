@@ -3,7 +3,7 @@ const SeleniumSetup = require('./selenium-setup');
 
 async function main() {
   const driver = await SeleniumSetup.getDriver('account/sign-up');
-  const email = 'yyszcvpjnrtfqcatxd@cazlp.com';
+  const email = 'gmjnbxjugwafzsnaeo@cazlp.com';
   const passwordInvalid = '123';
   const password = '&xPkFS0a^b%J%K8P';
   try {
