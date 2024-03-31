@@ -7,6 +7,7 @@ import Account from './Pages/Account/Account';
 import SignUp from './Pages/Account/SignUp';
 import LogIn from './Pages/Account/Login';
 import Verify from './Pages/Account/Verify';
+import SignUpConfirmation from './Pages/Account/SignUpConfirmation';
 
 export default function AppRoutes() {
   return (
@@ -18,6 +19,10 @@ export default function AppRoutes() {
       <Route path='/account' element={<Account />} />
       <Route path='/account/log-in' element={<LogIn />} />
       <Route path='/account/sign-up' element={<SignUp />} />
+      <Route
+        path='/account/sign-up-confirmation'
+        element={<SignUpConfirmation />}
+      />
       <Route path='/account/verify' element={<Verify />} />
     </Routes>
   );

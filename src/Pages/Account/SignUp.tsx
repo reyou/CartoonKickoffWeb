@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ErrorPanel from '../../Components/ErrorPanel';
 import SuccessPanel from '../../Components/SuccessPanel';
 import HttpError from '../../Lib/HttpError';
@@ -30,6 +30,7 @@ const checkPasswordStrength = (password: string): boolean => {
 };
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [signUpDisabled, setSignUpDisabled] = useState(false);
   const [email, setEmail] = useState('');
@@ -69,6 +70,11 @@ export default function SignUp() {
       });
       setSuccessMessage(response.data.message);
       setSignUpDisabled(true);
+      await Utils.sleep();
+      navigate('/account/sign-up-confirmation', {
+        replace: true,
+        state: { email: email }
+      });
     } catch (error) {
       const httpError = error as HttpError;
       const errorMessages = [httpError.message];
