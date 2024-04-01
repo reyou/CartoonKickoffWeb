@@ -1,13 +1,4 @@
-import { ValidationErrorMap } from './ValidationErrorMap';
-
-type Data = {
-  type: string;
-  title?: string;
-  status?: number;
-  errors?: ValidationErrorMap;
-  traceId?: string;
-  message: string;
-};
+import { Data } from './Data';
 
 export default class HttpError extends Error {
   public statusCode: number;
@@ -23,6 +14,7 @@ export default class HttpError extends Error {
   public type: string = '';
   public title: string = '';
   public traceId: string = '';
+  public isNetworkError: boolean = false;
 
   constructor(
     message: string,

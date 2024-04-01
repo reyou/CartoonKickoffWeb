@@ -19,7 +19,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authToken, setAuthToken] = useState<string | null>(null);
 
   useEffect(() => {
-    // Get the stored token from localStorage when the app loads
     const token = localStorage.getItem('token');
     if (token !== null) {
       setAuthToken(token);

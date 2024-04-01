@@ -51,6 +51,9 @@ export default class Http {
         httpError.statusText = error.response?.statusText;
         httpError.message += ' - ' + httpError.statusText;
       }
+      if (error.code === 'ERR_NETWORK') {
+        httpError.isNetworkError = true;
+      }
 
       httpError.url = error.request.responseURL;
       let responseData = error.response?.data;

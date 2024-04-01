@@ -16,11 +16,16 @@ export default function Verify() {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [errors, setErrors] = useState<ValidationErrorMap>({});
+  const [httpError, setHttpError] = useState<HttpError | null>(null);
+  const [userId, setUserId] = useState<string>('');
+  const [token, setToken] = useState<string>('');
 
   useEffect(() => {
-    const token = searchParams.get('token');
     const userId = searchParams.get('userId');
-    if (token && userId) {
+    const token = searchParams.get('token');
+    if (userId && token) {
+      setUserId(userId);
+      setToken(token);
       verifyAccount(token, userId);
     } else {
       setVerificationStatus('error');
@@ -30,8 +35,11 @@ export default function Verify() {
 
   const verifyAccount = async (token: string, userId: string) => {
     try {
+      setVerificationStatus('loading');
+      setSuccessMessage('');
+      setHttpError(null);
+      setErrorMessages([]);
       await Utils.sleep();
-      // Replace with your actual API endpoint
       const response = await Http.post(`account/verify`, {
         token,
         userId
@@ -40,6 +48,7 @@ export default function Verify() {
       setSuccessMessage(response.data.message);
     } catch (error: any) {
       const httpError = error as HttpError;
+      setHttpError(httpError);
       const errorMessages = [httpError.message];
       if (httpError.data?.message) {
         errorMessages.push(httpError.data.message);
@@ -65,9 +74,13 @@ export default function Verify() {
 
   interface VerificationEmailProps {
     errorMessages: string[];
+    httpError: HttpError | null;
   }
 
-  const VerificationEmail = ({ errorMessages }: VerificationEmailProps) => {
+  const VerificationEmail = ({
+    errorMessages,
+    httpError
+  }: VerificationEmailProps) => {
     const navigate = useNavigate();
     if (!errorMessages || errorMessages.length === 0) {
       return <></>;
@@ -77,23 +90,60 @@ export default function Verify() {
       navigate('/account/sign-up', { replace: true });
     };
 
-    return (
-      <p>
-        <button
-          onClick={handleSignUpClick}
-          className='btn btn-link link-primary'
-          style={{
-            padding: 0,
-            border: 'none',
-            backgroundColor: 'transparent',
-            verticalAlign: 'baseline'
-          }}
-        >
-          Click here
-        </button>{' '}
-        to sign up again with your email address.
-      </p>
-    );
+    const handleRetry = async () => {
+      await verifyAccount(userId, token);
+    };
+
+    if (httpError && httpError.isNetworkError) {
+      return (
+        <>
+          <button
+            onClick={handleRetry}
+            className='btn btn-link link-primary'
+            style={{
+              padding: 0,
+              border: 'none',
+              backgroundColor: 'transparent',
+              verticalAlign: 'baseline'
+            }}
+          >
+            Click here
+          </button>
+          {` to try again.`}
+        </>
+      );
+    } else if (
+      httpError &&
+      httpError.data &&
+      httpError.data.errorCode === 'ACCOUNT_ALREADY_VERIFIED'
+    ) {
+      return (
+        <>
+          <Link to='/account/log-in' className='link-primary'>
+            Click here
+          </Link>{' '}
+          {' to login.'}
+        </>
+      );
+    } else {
+      return (
+        <p>
+          <button
+            onClick={handleSignUpClick}
+            className='btn btn-link link-primary'
+            style={{
+              padding: 0,
+              border: 'none',
+              backgroundColor: 'transparent',
+              verticalAlign: 'baseline'
+            }}
+          >
+            Click here
+          </button>{' '}
+          to sign up again with your email address.
+        </p>
+      );
+    }
   };
 
   return (
@@ -105,7 +155,10 @@ export default function Verify() {
             errorMessages={errorMessages}
             errors={errors}
           ></ErrorPanel>
-          <VerificationEmail errorMessages={errorMessages}></VerificationEmail>
+          <VerificationEmail
+            errorMessages={errorMessages}
+            httpError={httpError}
+          ></VerificationEmail>
           <SuccessPanel successMessage={successMessage}></SuccessPanel>
         </div>
       </div>
