@@ -162,7 +162,7 @@ export default function SignUp() {
         <div className='mt-3'>
           <p>
             Already signed up?{' '}
-            <Link to='/account/login' className='link-primary'>
+            <Link to='/account/log-in' className='link-primary'>
               Log in here
             </Link>
           </p>

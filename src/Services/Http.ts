@@ -4,10 +4,12 @@ import HttpResponse from '../Lib/HttpResponse';
 import Environment from './Environment';
 
 export default class Http {
-  static async get(route: string): Promise<HttpResponse> {
+  static async get(route: string, headers: any = {}): Promise<HttpResponse> {
     const endpoint = Environment.getEndpoint(route);
     try {
-      const axiosResponse = await axios.get(endpoint);
+      const axiosResponse = await axios.get(endpoint, {
+        headers
+      });
       const httpResponse = new HttpResponse(
         axiosResponse.status,
         axiosResponse.data.data,
@@ -21,10 +23,16 @@ export default class Http {
     }
   }
 
-  static async post(route: string, body: any): Promise<HttpResponse> {
+  static async post(
+    route: string,
+    body: any,
+    headers: any = {}
+  ): Promise<HttpResponse> {
     const endpoint = Environment.getEndpoint(route);
     try {
-      const axiosResponse = await axios.post(endpoint, body);
+      const axiosResponse = await axios.post(endpoint, body, {
+        headers
+      });
       const httpResponse = new HttpResponse(
         axiosResponse.status,
         axiosResponse.data.data,

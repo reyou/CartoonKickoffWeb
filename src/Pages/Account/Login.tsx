@@ -29,8 +29,8 @@ function Login() {
 
   const handleAuthentication = (token: string) => {
     auth?.login(token);
-    const fromQuery = searchParams.get('from');
-    const from = fromQuery || '/account';
+    const redirectQuery = searchParams.get('redirect');
+    const from = redirectQuery || '/account';
     navigate(from, { replace: true });
   };
 
@@ -55,6 +55,7 @@ function Login() {
       });
       setSuccessMessage(response.data.message);
       setLoginDisabled(true);
+      await Utils.sleep();
       handleAuthentication(response.data.token);
     } catch (error) {
       const httpError = error as HttpError;

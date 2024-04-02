@@ -31,7 +31,7 @@ export default function Verify() {
       setVerificationStatus('error');
       setErrorMessages(['No verification token found in the URL.']);
     }
-  }, [searchParams]);
+  }, []);
 
   const verifyAccount = async (token: string, userId: string) => {
     try {
@@ -122,7 +122,7 @@ export default function Verify() {
           <Link to='/account/log-in' className='link-primary'>
             Click here
           </Link>{' '}
-          {' to login.'}
+          {' to log in.'}
         </>
       );
     } else {
@@ -146,6 +146,24 @@ export default function Verify() {
     }
   };
 
+  interface LoginLinkProps {
+    successMessage: string;
+  }
+
+  const LoginLink = ({ successMessage }: LoginLinkProps) => {
+    if (successMessage.length > 0) {
+      return (
+        <>
+          <Link to='/account/log-in' className='link-primary'>
+            Click here
+          </Link>{' '}
+          {' to log in.'}
+        </>
+      );
+    }
+    return <></>;
+  };
+
   return (
     <PageLayout title='Account verification'>
       <div className='row justify-content-center'>
@@ -160,6 +178,7 @@ export default function Verify() {
             httpError={httpError}
           ></VerificationEmail>
           <SuccessPanel successMessage={successMessage}></SuccessPanel>
+          <LoginLink successMessage={successMessage}></LoginLink>
         </div>
       </div>
     </PageLayout>
