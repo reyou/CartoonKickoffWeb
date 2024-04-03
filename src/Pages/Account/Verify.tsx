@@ -31,7 +31,7 @@ export default function Verify() {
       setVerificationStatus('error');
       setErrorMessages(['No verification token found in the URL.']);
     }
-  }, []);
+  }, [searchParams]);
 
   const verifyAccount = async (token: string, userId: string) => {
     try {

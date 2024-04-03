@@ -11,6 +11,10 @@ export default function AuthenticatedRoute({
   let auth = useAuth();
   let location = useLocation();
 
+  if (auth && !auth.isAuthInitialized) {
+    return <div>Loading...</div>;
+  }
+
   if (auth && !auth.authToken) {
     return (
       <Navigate

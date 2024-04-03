@@ -1,4 +1,5 @@
 import axios, { AxiosResponse, isAxiosError } from 'axios';
+import AuthUtils from '../Lib/AuthUtils';
 import HttpError from '../Lib/HttpError';
 import HttpResponse from '../Lib/HttpResponse';
 import Environment from './Environment';
@@ -7,8 +8,8 @@ export default class Http {
   static async get(route: string, headers: any = {}): Promise<HttpResponse> {
     const endpoint = Environment.getEndpoint(route);
     try {
-      const axiosResponse = await axios.get(endpoint, {
-        headers
+      const axiosResponse: AxiosResponse = await axios.get(endpoint, {
+        headers: AuthUtils.attachTokenToHeaders(headers)
       });
       const httpResponse = new HttpResponse(
         axiosResponse.status,
@@ -31,7 +32,7 @@ export default class Http {
     const endpoint = Environment.getEndpoint(route);
     try {
       const axiosResponse = await axios.post(endpoint, body, {
-        headers
+        headers: AuthUtils.attachTokenToHeaders(headers)
       });
       const httpResponse = new HttpResponse(
         axiosResponse.status,

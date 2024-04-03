@@ -1,10 +1,5 @@
-import { useState, FormEvent, useEffect } from 'react';
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams
-} from 'react-router-dom';
+import { useState, FormEvent, useEffect, useCallback } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../Components/AuthProvider';
 import ErrorPanel from '../../Components/ErrorPanel';
 import SuccessPanel from '../../Components/SuccessPanel';
@@ -27,18 +22,21 @@ function Login() {
   const [errors, setErrors] = useState<ValidationErrorMap>({});
   const [successMessage, setSuccessMessage] = useState('');
 
-  const handleAuthentication = (token: string) => {
-    auth?.login(token);
-    const redirectQuery = searchParams.get('redirect');
-    const from = redirectQuery || '/account';
-    navigate(from, { replace: true });
-  };
+  const handleAuthentication = useCallback(
+    (token: string) => {
+      auth?.login(token);
+      const redirectQuery = searchParams.get('redirect');
+      const from = redirectQuery || '/account';
+      navigate(from, { replace: true });
+    },
+    [auth, navigate, searchParams]
+  );
 
   useEffect(() => {
     if (auth !== null && auth.authToken) {
       handleAuthentication(auth.authToken);
     }
-  }, [auth, navigate, searchParams]);
+  }, [auth, navigate, searchParams, handleAuthentication]);
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

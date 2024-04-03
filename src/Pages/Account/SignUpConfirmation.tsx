@@ -11,7 +11,7 @@ export default function SignUpConfirmation() {
     if (!email) {
       navigate('/', { replace: true });
     }
-  }, []);
+  }, [email, navigate]);
 
   return (
     <PageLayout title='Verify Your Account'>

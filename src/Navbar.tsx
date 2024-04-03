@@ -4,7 +4,7 @@ import styles from './Navbar.module.css';
 import { useState } from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useAuth } from './Components/AuthProvider';
-import { AuthContextType } from './Components/AuthContextType';
+import AuthContextType from './Components/AuthContextType';
 
 interface NavbarStandardItemsProps {
   handleNavCollapse: () => void;
@@ -83,16 +83,21 @@ function NavbarAccountItems({ auth }: NavbarAccountItemsProps) {
   return (
     <ul className='navbar-nav ms-auto mb-2 mb-lg-0'>
       <li className='nav-item dropdown'>
-        <a
+        <button
           className='nav-link dropdown-toggle'
-          href='#'
           id='navbarAccountDropdown'
-          role='button'
           data-bs-toggle='dropdown'
           aria-expanded='false'
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            color: 'inherit',
+            textDecoration: 'inherit'
+          }}
         >
           Account
-        </a>
+        </button>
         <ul
           className='dropdown-menu dropdown-menu-end'
           aria-labelledby='navbarAccountDropdown'

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import AuthenticatedRoute from '../../Components/AuthenticatedRoute';
+import HttpError from '../../Lib/HttpError';
+import { ValidationErrorMap } from '../../Lib/ValidationErrorMap';
 import PageLayout from '../../PageLayout';
+import Http from '../../Services/Http';
 
 // Define a type for the user profile data
 type UserProfile = {
@@ -11,6 +14,9 @@ type UserProfile = {
 };
 
 export default function Account() {
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
+  const [errors, setErrors] = useState<ValidationErrorMap>({});
+
   // State to hold the user's profile data
   const [profile, setProfile] = useState<UserProfile>({
     email: '',
@@ -20,8 +26,28 @@ export default function Account() {
   });
 
   useEffect(() => {
-    // Here you would fetch the user's profile data from your API
-    // For demonstration, I'm using placeholder values
+    const getUserProfile = async () => {
+      try {
+        const response = await Http.get('account/profile');
+        console.log({
+          file: __filename,
+          function: 'functionName',
+          response,
+          guid: 'a1f59fe8-783a-495f-a71b-23abbccbc21f'
+        });
+      } catch (error) {
+        const httpError = error as HttpError;
+        const errorMessages = [httpError.message];
+        if (httpError.data?.message) {
+          errorMessages.push(httpError.data.message);
+        }
+        setErrorMessages(errorMessages);
+        if (httpError.data?.errors) {
+          setErrors(httpError.data?.errors);
+        }
+      }
+    };
+    getUserProfile();
     setProfile({
       email: 'user@example.com',
       username: 'username',

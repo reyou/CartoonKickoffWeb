@@ -8,6 +8,7 @@ import SignUp from './Pages/Account/SignUp';
 import LogIn from './Pages/Account/Login';
 import Verify from './Pages/Account/Verify';
 import SignUpConfirmation from './Pages/Account/SignUpConfirmation';
+import Sandbox from './Pages/Internal/Sandbox';
 
 export default function AppRoutes() {
   return (
@@ -24,6 +25,7 @@ export default function AppRoutes() {
         element={<SignUpConfirmation />}
       />
       <Route path='/account/verify' element={<Verify />} />
+      <Route path='/internal/sandbox' element={<Sandbox />} />
     </Routes>
   );
 }

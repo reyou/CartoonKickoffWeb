@@ -6,9 +6,8 @@ import React, {
   ReactNode
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-import HttpError from '../Lib/HttpError';
 import Http from '../Services/Http';
-import { AuthContextType } from './AuthContextType';
+import AuthContextType from './AuthContextType';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -21,6 +20,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const navigate = useNavigate();
   const [authToken, setAuthToken] = useState<string | null>(null);
+  const [isAuthInitialized, setIsAuthInitialized] = useState(false);
 
   useEffect(() => {
     initializeToken();
@@ -35,13 +35,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
         setAuthToken(token);
       } catch (error) {
-        const httpError = error as HttpError;
-        console.log({
-          file: __filename,
-          function: 'functionName',
-          httpError,
-          guid: '29cd5735-02f0-4d0c-93a3-f611323e5eb8'
-        });
+        localStorage.removeItem('token');
+      } finally {
+        setIsAuthInitialized(true);
       }
     }
   };
@@ -58,7 +54,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ authToken, login, logout }}>
+    <AuthContext.Provider
+      value={{ authToken, isAuthInitialized, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
