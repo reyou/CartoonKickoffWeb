@@ -26,8 +26,8 @@ function Login() {
     (token: string) => {
       auth?.login(token);
       const redirectQuery = searchParams.get('redirect');
-      const from = redirectQuery || '/account';
-      navigate(from, { replace: true });
+      const redirectTo = redirectQuery || '/account';
+      navigate(redirectTo, { replace: true });
     },
     [auth, navigate, searchParams]
   );

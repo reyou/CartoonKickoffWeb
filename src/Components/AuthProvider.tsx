@@ -6,6 +6,7 @@ import React, {
   ReactNode
 } from 'react';
 import { useNavigate } from 'react-router-dom';
+import HttpError from '../Lib/HttpError';
 import Http from '../Services/Http';
 import AuthContextType from './AuthContextType';
 
@@ -35,7 +36,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
         setAuthToken(token);
       } catch (error) {
-        localStorage.removeItem('token');
+        const httpError = error as HttpError;
+        if (httpError.statusCode === 401) {
+          localStorage.removeItem('token');
+        }
       } finally {
         setIsAuthInitialized(true);
       }
@@ -45,6 +49,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = (token: string) => {
     localStorage.setItem('token', token);
     setAuthToken(token);
+    setIsAuthInitialized(true);
   };
 
   const logout = () => {

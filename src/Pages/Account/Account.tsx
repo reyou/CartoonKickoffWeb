@@ -29,11 +29,10 @@ export default function Account() {
     const getUserProfile = async () => {
       try {
         const response = await Http.get('account/profile');
-        console.log({
-          file: __filename,
-          function: 'functionName',
-          response,
-          guid: 'a1f59fe8-783a-495f-a71b-23abbccbc21f'
+        setProfile({
+          ...profile,
+          email: response.data.email,
+          username: response.data.userName
         });
       } catch (error) {
         const httpError = error as HttpError;
@@ -48,12 +47,6 @@ export default function Account() {
       }
     };
     getUserProfile();
-    setProfile({
-      email: 'user@example.com',
-      username: 'username',
-      newPassword: '', // Passwords should never be displayed or fetched in plain text
-      confirmPassword: '' // Passwords should never be displayed or fetched in plain text
-    });
   }, []);
 
   // Function to handle form submission
