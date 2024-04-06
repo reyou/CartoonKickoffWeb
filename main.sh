@@ -29,6 +29,11 @@ function log-in() {
     node "scripts\test\log-in.js"
 }
 
+function update-email() {
+    echo "update-email with e2e and captcha"
+    node "scripts\test\update-email.js"
+}
+
 function sign-up() {
     echo "sign-up with e2e and captcha"
     node "scripts\test\sign-up.js"
@@ -87,6 +92,8 @@ function main() {
         log-in
     elif [ "$1" = "sign-up" ]; then
         sign-up
+    elif [ "$1" = "update-email" ]; then
+        update-email
     else
         echo "Could not find the action: '$1'."
     fi
