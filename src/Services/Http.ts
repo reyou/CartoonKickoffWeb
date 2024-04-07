@@ -11,13 +11,7 @@ export default class Http {
       const axiosResponse: AxiosResponse = await axios.get(endpoint, {
         headers: AuthUtils.attachTokenToHeaders(headers)
       });
-      const httpResponse = new HttpResponse(
-        axiosResponse.status,
-        axiosResponse.data.data,
-        axiosResponse.data.date,
-        axiosResponse.data.guid
-      );
-      return httpResponse;
+      return Http.mapResponse(axiosResponse);
     } catch (error) {
       const parsedError = Http.parseError(error);
       throw parsedError;
@@ -34,17 +28,37 @@ export default class Http {
       const axiosResponse = await axios.post(endpoint, body, {
         headers: AuthUtils.attachTokenToHeaders(headers)
       });
-      const httpResponse = new HttpResponse(
-        axiosResponse.status,
-        axiosResponse.data.data,
-        axiosResponse.data.date,
-        axiosResponse.data.guid
-      );
-      return httpResponse;
+      return Http.mapResponse(axiosResponse);
     } catch (error) {
       const parsedError = Http.parseError(error);
       throw parsedError;
     }
+  }
+
+  static async put(
+    route: string,
+    body: any,
+    headers: any = {}
+  ): Promise<HttpResponse> {
+    const endpoint = Environment.getEndpoint(route);
+    try {
+      const axiosResponse = await axios.put(endpoint, body, {
+        headers: AuthUtils.attachTokenToHeaders(headers)
+      });
+      return Http.mapResponse(axiosResponse);
+    } catch (error) {
+      const parsedError = Http.parseError(error);
+      throw parsedError;
+    }
+  }
+  static mapResponse(axiosResponse: any): HttpResponse {
+    const httpResponse = new HttpResponse(
+      axiosResponse.status,
+      axiosResponse.data.data,
+      axiosResponse.data.date,
+      axiosResponse.data.guid
+    );
+    return httpResponse;
   }
 
   private static parseError(error: any) {

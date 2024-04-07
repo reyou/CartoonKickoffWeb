@@ -6,31 +6,19 @@ import Utils from '../../../Lib/Utils';
 import { ValidationErrorMap } from '../../../Lib/ValidationErrorMap';
 import Http from '../../../Services/Http';
 
-// Define a type for the user profile data
-type UserProfile = {
-  email: string;
-  newEmail: string;
-};
-
 export default function Email() {
+  const [isExecuting, setIsExecuting] = useState(false);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [errors, setErrors] = useState<ValidationErrorMap>({});
   const [successMessage, setSuccessMessage] = useState('');
-
-  // State to hold the user's profile data
-  const [profile, setProfile] = useState<UserProfile>({
-    email: '',
-    newEmail: ''
-  });
+  const [email, setEmail] = useState('');
+  const [newEmail, setNewEmail] = useState('');
 
   useEffect(() => {
     const getUserProfile = async () => {
       try {
         const response = await Http.get('account/profile');
-        setProfile({
-          ...profile,
-          email: response.data.email
-        });
+        setEmail(response.data.email);
       } catch (error) {
         const httpError = error as HttpError;
         const errorMessages = [httpError.message];
@@ -46,28 +34,46 @@ export default function Email() {
     getUserProfile();
   }, []);
 
+  // Function to handle changes in form inputs
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setNewEmail(value);
+  };
+
   // Function to handle form submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsExecuting(true);
     setErrorMessages([]);
     setErrors({});
     setSuccessMessage('');
 
-    if (profile.email === profile.newEmail) {
+    if (email === newEmail && 'adsf'.length > 10) {
       setErrorMessages([
         'The new email address must be different from the current email address.'
       ]);
       return;
     }
 
-    await Utils.sleep();
-    setSuccessMessage('Success! - Replace this message: response.data.message');
-  };
-
-  // Function to handle changes in form inputs
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setProfile({ ...profile, [name]: value });
+    try {
+      await Utils.sleep();
+      const response = await Http.put('account/email', {
+        email: newEmail
+      });
+      setSuccessMessage(response.data.message);
+    } catch (error) {
+      const httpError = error as HttpError;
+      const errorMessages = [httpError.message];
+      if (httpError.data?.message) {
+        errorMessages.push(httpError.data.message);
+      }
+      setErrorMessages(errorMessages);
+      if (httpError.data?.errors) {
+        setErrors(httpError.data?.errors);
+      }
+    } finally {
+      setIsExecuting(false);
+    }
   };
 
   return (
@@ -81,7 +87,7 @@ export default function Email() {
           className='form-control'
           id='current-email'
           name='currentEmail'
-          value={profile.email}
+          value={email}
           disabled
         />
       </div>
@@ -94,14 +100,14 @@ export default function Email() {
           className='form-control'
           id='newEmail'
           name='newEmail'
-          value={profile.newEmail}
+          value={newEmail}
           onChange={handleChange}
           maxLength={254}
           required
         />
       </div>
-      <button type='submit' className='btn btn-primary'>
-        Update Email
+      <button type='submit' disabled={isExecuting} className='btn btn-primary'>
+        {isExecuting ? 'Updating email...' : 'Update email'}
       </button>
       <ErrorPanel errorMessages={errorMessages} errors={errors}></ErrorPanel>
       <SuccessPanel successMessage={successMessage}></SuccessPanel>

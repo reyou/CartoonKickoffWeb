@@ -12,13 +12,16 @@ async function main() {
 
     // account page
     await driver.wait(until.elementLocated(By.id('current-email')), 10000);
-    const newEmailInput = await driver.wait(
-      until.elementIsEnabled(driver.findElement(By.id('newEmail'))),
-      10000
+    const submitButton = await driver.findElement(
+      By.css('button[type="submit"]')
     );
+    await driver.wait(async () => {
+      const isEnabled = await submitButton.isEnabled();
+      return isEnabled;
+    }, 10000);
 
     const newEmail = 'qmmtcvgewnnwthjyef@cazlp.com';
-    await newEmailInput.sendKeys(email);
+    await driver.findElement(By.id('newEmail')).sendKeys(newEmail);
     await driver.findElement(By.css('button[type="submit"]')).click();
   } finally {
     // await driver.quit();
