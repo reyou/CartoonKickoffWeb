@@ -9,6 +9,7 @@ import LogIn from './Pages/Account/Login';
 import Verify from './Pages/Account/Verify';
 import SignUpConfirmation from './Pages/Account/SignUpConfirmation';
 import Sandbox from './Pages/Internal/Sandbox';
+import NotFoundPage from './Pages/NotFoundPage';
 
 export default function AppRoutes() {
   return (
@@ -26,6 +27,7 @@ export default function AppRoutes() {
       />
       <Route path='/account/verify' element={<Verify />} />
       <Route path='/internal/sandbox' element={<Sandbox />} />
+      <Route path='*' element={<NotFoundPage />} />
     </Routes>
   );
 }

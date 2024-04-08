@@ -48,7 +48,7 @@ export default function Email() {
     setErrors({});
     setSuccessMessage('');
 
-    if (email === newEmail && 'adsf'.length > 10) {
+    if (email === newEmail) {
       setErrorMessages([
         'The new email address must be different from the current email address.'
       ]);

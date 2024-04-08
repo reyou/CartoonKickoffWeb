@@ -20,7 +20,7 @@ async function main() {
       return isEnabled;
     }, 10000);
 
-    const newEmail = 'qmmtcvgewnnwthjyef@cazlp.com';
+    const newEmail = 'rqeqrabqqgictgnyal@ckptr.com';
     await driver.findElement(By.id('newEmail')).sendKeys(newEmail);
     await driver.findElement(By.css('button[type="submit"]')).click();
   } finally {
