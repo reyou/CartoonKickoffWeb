@@ -16,11 +16,10 @@ export default function AuthenticatedRoute({
   }
 
   if (auth && !auth.authToken) {
+    const redirectUrl = `${location.pathname}${location.search}`;
+    const encodedRedirectUrl = encodeURIComponent(redirectUrl);
     return (
-      <Navigate
-        to={`/account/log-in?redirect=${location.pathname}${location.search}`}
-        replace
-      />
+      <Navigate to={`/account/log-in?redirect=${encodedRedirectUrl}`} replace />
     );
   }
 

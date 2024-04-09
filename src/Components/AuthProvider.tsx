@@ -39,10 +39,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const httpError = error as HttpError;
         if (httpError.statusCode === 401) {
           localStorage.removeItem('token');
+          setAuthToken(null);
         }
       } finally {
         setIsAuthInitialized(true);
       }
+    } else {
+      setIsAuthInitialized(true);
     }
   };
 
