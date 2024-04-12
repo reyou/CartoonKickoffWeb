@@ -15,9 +15,6 @@ export default function Account() {
   return (
     <AuthenticatedRoute>
       <PageLayout title='Account'>
-        <div className='container my-4'>
-          <h3>Profile Information</h3>
-        </div>
         <VerticalTabs tabContent={tabContent}></VerticalTabs>
       </PageLayout>
     </AuthenticatedRoute>

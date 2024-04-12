@@ -4,7 +4,7 @@ const SeleniumSetup = require('./selenium-setup');
 async function main() {
   const driver = await SeleniumSetup.getDriver('account/log-in');
   try {
-    const email = 'bfjyhngpttsyvivmey@cazlq.com';
+    const email = 'tzjykksigratpdpssu@cazlg.com';
     const password = '&xPkFS0a^b%J%K8P';
     await driver.findElement(By.id('email')).sendKeys(email);
     await driver.findElement(By.id('password')).sendKeys(password);

@@ -9,26 +9,6 @@ import { ValidationErrorMap } from '../../Lib/ValidationErrorMap';
 import PageLayout from '../../PageLayout';
 import Http from '../../Services/Http';
 
-const checkPasswordStrength = (password: string): boolean => {
-  // Define the minimum password length.
-  const minLength = 8;
-
-  // Regular expressions for various character types.
-  const hasUpperCase = /[A-Z]/;
-  const hasLowerCase = /[a-z]/;
-  const hasNumbers = /[0-9]/;
-  const hasNonAlphanumerics = /[\W_]/;
-
-  // Check the strength of the password against the criteria.
-  return (
-    password.length >= minLength &&
-    hasUpperCase.test(password) &&
-    hasLowerCase.test(password) &&
-    hasNumbers.test(password) &&
-    hasNonAlphanumerics.test(password)
-  );
-};
-
 export default function SignUp() {
   const navigate = useNavigate();
   const [isSigningUp, setIsSigningUp] = useState(false);
@@ -55,7 +35,7 @@ export default function SignUp() {
       return;
     }
 
-    if (!checkPasswordStrength(password)) {
+    if (Utils.getPasswordStrength(password) < 5) {
       setPasswordStrengthError(true);
       setIsSigningUp(false);
       return;
